@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import requests
 import json
 
-API_KEY = '71f6779186cc32448b4c412eea65b982'
+API_KEY = '3a822b1eecf6f296c1fc5dc6b74f1b6d'
 TIME_SENSITIVITY = timedelta(minutes=10)
 
 class WeatherForecastAPI(generics.RetrieveAPIView):
@@ -28,6 +28,7 @@ class WeatherForecastAPI(generics.RetrieveAPIView):
         except WeatherForecast.DoesNotExist:
             pass
 
+        WeatherForecast.objects.filter(latitude=lat, longitude=lon, detailing_type=detailing_type).delete()
         # Request data from OpenWeatherMap API
         api_url = f'https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=current,minutely&appid={API_KEY}'
         response = requests.get(api_url)
